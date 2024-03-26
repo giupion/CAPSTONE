@@ -1,15 +1,16 @@
+// frontend/components/Dashboard.js
+
 import React, { useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
     const [destinations, setDestinations] = useState([]);
-    const [destinationImage, setDestinationImage] = useState(null);
+    const [destinationImages, setDestinationImages] = useState({});
 
     useEffect(() => {
         const fetchDestinations = async () => {
             try {
-                // Effettua una richiesta al backend per ottenere le destinazioni
                 const response = await fetch('/api/destinations');
                 const data = await response.json();
                 if (data && data.destinations) {
@@ -20,52 +21,54 @@ export default function Dashboard({ auth }) {
             }
         };
 
-        // Esegui la funzione per recuperare le destinazioni dal database
         fetchDestinations();
     }, []);
 
     useEffect(() => {
-        // Funzione per ottenere un'immagine casuale da Unsplash basata sul nome della destinazione
-        const fetchDestinationImage = async (destinationName) => {
-            try {
-                // Effettua una richiesta a Unsplash per ottenere un'immagine casuale
-                const response = await fetch(`https://api.unsplash.com/photos/random?query=${destinationName}&client_id=YOUR_UNSPLASH_CLIENT_ID`);
-                const data = await response.json();
-                if (data && data.urls && data.urls.regular) {
-                    setDestinationImage(data.urls.regular);
+        const fetchDestinationImages = async () => {
+            const newDestinationImages = {};
+            for (const destination of destinations) {
+                try {
+                    const response = await fetch(`https://api.unsplash.com/photos/random?query=${destination.name}&client_id=bNOKThuTgvlWKXQs4GvQ9m9O5BaxX7f75tZ48AwaYBU`);
+                    const data = await response.json();
+                    if (data && data.urls && data.urls.regular) {
+                        newDestinationImages[destination.name] = data.urls.regular;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching image for destination ${destination.name}:`, error);
                 }
-            } catch (error) {
-                console.error('Error fetching destination image:', error);
             }
+            setDestinationImages(newDestinationImages);
         };
 
         if (destinations.length > 0) {
-            // Scegli casualmente una destinazione ogni giorno
-            const randomDestination = destinations[Math.floor(Math.random() * destinations.length)].name;
-
-            // Esegui la funzione per recuperare l'immagine della destinazione selezionata casualmente
-            fetchDestinationImage(randomDestination);
+            fetchDestinationImages();
         }
     }, [destinations]);
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Around The World</h2>}
         >
             <Head title="Dashboard" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            {destinationImage ? (
-                                <img src={destinationImage} alt="Destination" className="max-w-full h-auto" />
-                            ) : (
-                                <p>Loading...</p>
-                            )}
-                            <p>You're logged in!</p>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {destinations.map(destination => (
+                            <div key={destination.id} className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                {destinationImages[destination.name] ? (
+                                    <img src={destinationImages[destination.name]} alt={destination.name} className="w-full h-40 object-cover" />
+                                ) : (
+                                    <div className="w-full h-40 bg-gray-300 flex items-center justify-center">nooo</div>
+                                )}
+                                <div className="p-4">
+                                    <h3 className="text-lg font-semibold mb-2">{destination.name}</h3>
+                                    <p>{destination.description}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
