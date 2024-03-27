@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            // Altri campi se necessari
+            $table->text('image_url')->nullable(); // Cambiato da json a text
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Destination;
+use Illuminate\Support\Facades\Http;
 
 class DestinationSeeder extends Seeder
 {
@@ -74,18 +75,23 @@ class DestinationSeeder extends Seeder
     ['name' => 'Zurich, Switzerland', 'description' => 'Zurich is a picturesque city in Switzerland known for its stunning scenery, historic landmarks, and vibrant cultural scene. Explore charming Old Town streets, take a boat cruise on Lake Zurich, and indulge in delicious Swiss chocolate.'],
 ];
 
-
 foreach ($destinations as $destination) {
-    // Check if the destination already exists
-    $existingDestination = Destination::where('name', $destination['name'])->first();
-    // If the destination does not exist, create it
-    if (!$existingDestination) {
-        Destination::create([
-            'name' => $destination['name'],
-            'description' => $destination['description'],
-            // Add other fields if necessary
-        ]);
+    $response = Http::get('https://api.unsplash.com/photos/random', [
+        'query' => $destination['name'],
+        'client_id' => 'DY6Yrc7v_4Fv3wV9FhlUsktBrFHnSxpbStHGT37FElI',
+        'count' => 1,
+    ]);
+
+    if ($response->successful()) {
+        $imageUrl = $response->json()[0]['urls']['regular'];
+        $destination['image_url'] = $imageUrl;
     }
+
+    Destination::create([
+        'name' => $destination['name'],
+        'description' => $destination['description'],
+        'image_url' => isset($destination['image_url']) ? $destination['image_url'] : null,
+    ]);
 }
 }
 }

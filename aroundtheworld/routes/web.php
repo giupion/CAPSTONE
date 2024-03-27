@@ -25,9 +25,13 @@ Route::get('/', function () {
     ]);
 });
 
+use App\Http\Controllers\DestinationController;
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/api/destinations', [DestinationController::class, 'index'])->name('destinations.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
