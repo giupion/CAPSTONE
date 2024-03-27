@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
     const [destination, setDestination] = useState(null);
+    const [destinationsList, setDestinationsList] = useState([]);
 
     useEffect(() => {
         const fetchRandomDestination = async () => {
@@ -18,7 +20,20 @@ export default function Dashboard({ auth }) {
             }
         };
 
+        const fetchDestinationsList = async () => {
+            try {
+                const response = await fetch('/api/destinations');
+                const data = await response.json();
+                if (data && data.destinations) {
+                    setDestinationsList(data.destinations);
+                }
+            } catch (error) {
+                console.error('Error fetching destinations list:', error);
+            }
+        };
+
         fetchRandomDestination();
+        fetchDestinationsList();
     }, []);
 
     return (
@@ -29,7 +44,43 @@ export default function Dashboard({ auth }) {
             <Head title="Dashboard" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <nav className="bg-gray-800" aria-label="Destinations">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-center justify-between h-16">
+                            <div className="flex items-center">
+                                <div className="flex-shrink-0">
+                                    <h2 className="text-white font-semibold text-lg">Destinations</h2>
+                                </div>
+                                <div className="hidden md:block">
+                                    <div className="ml-10 flex items-baseline space-x-4">
+                                        {destinationsList.map((destination) => (
+                                            <Link
+                                                key={destination.id}
+                                                href={`/destinations/${destination.id}`}
+                                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                                activeClassName="bg-gray-900 text-white"
+                                            >
+                                                {destination.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="hidden md:block">
+                                <div className="ml-4 flex items-center md:ml-6">
+                                    <Link
+                                        href="/destinations"
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                                        activeClassName="bg-gray-900 text-white"
+                                    >
+                                        Tutte le nostre mete
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         {destination ? (
                             <div>
