@@ -18,4 +18,12 @@ class DestinationController extends Controller
             'destination' => $destination,
         ]);
     }
+
+
+    public function showAll()
+    {
+        $destinations = Destination::all();
+
+        return view('all_destinations', compact('destinations'));
+    }
 }

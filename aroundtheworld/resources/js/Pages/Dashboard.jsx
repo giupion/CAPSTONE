@@ -1,12 +1,16 @@
+// Importazione dei moduli necessari
 import React, { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/inertia-react';
+import { InertiaLink } from '@inertiajs/inertia-react'; // Aggiunto InertiaLink
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
+// Definizione del componente Dashboard
 export default function Dashboard({ auth }) {
+    // Dichiarazione dello stato locale
     const [destination, setDestination] = useState(null);
     const [destinationsList, setDestinationsList] = useState([]);
 
+    // Effetto per caricare i dati iniziali
     useEffect(() => {
         const fetchRandomDestination = async () => {
             try {
@@ -36,48 +40,46 @@ export default function Dashboard({ auth }) {
         fetchDestinationsList();
     }, []);
 
+    // Rendering del componente
     return (
         <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Around The World</h2>}
-        >
-            <Head title="Dashboard" />
-
-            <div className="py-12">
-                <nav className="bg-gray-800" aria-label="Destinations">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="flex items-center justify-between h-16">
-                            <div className="flex items-center">
-                                <div className="flex-shrink-0">
-                                    <h2 className="text-white font-semibold text-lg">AroundTheWorld</h2>
-                                </div>
-                                <div className="hidden md:block">
-                                    <div className="ml-10 flex items-baseline space-x-4">
-                                        {destinationsList.map((destination) => (
-                                            <Link
-                                                key={destination.id}
-                                                href={`/destinations/${destination.id}`}
-                                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                                            >
-                                                {destination.name}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
+        user={auth.user}
+        header={(
+            <nav className="bg-gray-800 rounded-lg" aria-label="Destinations">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+                    <div className="flex items-center justify-between h-full">
+                        <div className="flex items-center">
+                            <div className="flex-shrink-0">
+                                <h2 className="text-white font-semibold text-lg">AroundTheWorld</h2>
                             </div>
-                            <div >
-                                <div className="ml-4 flex items-center md:ml-6">
-                                    <Link
-                                        href="/destinations"
-                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                            <div className="ml-10 flex items-baseline space-x-4">
+                                {destinationsList.map((destination) => (
+                                    <InertiaLink
+                                        key={destination.id}
+                                        href={`/destinations/${destination.id}`}
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
                                     >
-                                        Tutte le nostre mete
-                                    </Link>
-                                </div>
+                                        {destination.name}
+                                    </InertiaLink>
+                                ))}
                             </div>
                         </div>
+                        <div className="ml-4 flex items-center md:ml-6">
+                            <InertiaLink
+                                href="/all-destinations" // Definisci la rotta per AllDestinations
+                                className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
+                            >
+                                Tutte le nostre mete
+                            </InertiaLink>
+                        </div>
                     </div>
-                </nav>
+                </div>
+            </nav>
+        )}
+    >
+            <Head title="Dashboard " />
+
+            <div className="py-12 bg-gray-800 ">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         {destination ? (
