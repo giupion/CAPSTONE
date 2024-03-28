@@ -29,17 +29,21 @@ use App\Http\Controllers\DestinationController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        $destination = (new DestinationController())->index();
+        return Inertia::render('Dashboard', ['destination' => $destination]);
     })->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/api/destinations', [DestinationController::class, 'showAll']);
     Route::get('/all-destinations', function () {
         return inertia('AllDestinations');
     });
-    
-    
 });
+
+
+
 
 require __DIR__.'/auth.php';

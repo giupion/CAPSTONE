@@ -1,29 +1,26 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
     public function index()
-    {
-        // Controlla se la destinazione casuale è già in cache
-        $destination = Cache::remember('random_destination', 60 * 24, function () {
-            // Ottieni una destinazione casuale
-            return Destination::inRandomOrder()->first();
-        });
-
-        return response()->json([
-            'destination' => $destination,
-        ]);
-    }
+{
+    // Recupera una destinazione casuale
+    return Destination::inRandomOrder()->first();
+}
 
 
     public function showAll()
     {
+        // Recupera tutte le destinazioni
         $destinations = Destination::all();
 
-        return view('all_destinations', compact('destinations'));
+        return response()->json([
+            'destinations' => $destinations,
+        ]);
     }
 }

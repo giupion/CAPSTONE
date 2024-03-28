@@ -1,5 +1,3 @@
-// components/AllDestinations.js
-
 import React, { useState, useEffect } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 

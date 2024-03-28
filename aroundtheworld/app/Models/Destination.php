@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Destination extends Model
 {
+    use HasFactory;
+
     public function flightBookings()
     {
         return $this->hasMany(FlightBooking::class);
