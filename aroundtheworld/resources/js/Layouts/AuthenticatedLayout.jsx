@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
@@ -9,24 +9,23 @@ export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-800">
-            <nav className="bg-gray-800 border-b border-gray-100  rounded-md">
+        <div className="min-h-screen" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}>
+            <nav className="bg-transparent border-b border-gray-100 rounded-md py-4"> {/* Aumenta la dimensione della navbar */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
+                    <div className="flex justify-between h-20"> {/* Aumenta l'altezza della navbar */}
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    <ApplicationLogo src="/images/aroundtheworld.jpg" alt="Logo" className="block h-28 w-auto bg-gray-800" /> {/* Aumenta le dimensioni del logo */}
                                 </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex ">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}className="text-white">
-                                    Dashboard
+                                <NavLink href={route('dashboard')} active={route().current('dashboard')} className="text-white">
+                                    Benvenuto Giuseppe!
                                 </NavLink>
                             </div>
                         </div>
-
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="ms-3 relative">
                                 <Dropdown>
@@ -55,7 +54,7 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('profile.edit')}>Il mio Profilo e le mie prenotazioni</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>

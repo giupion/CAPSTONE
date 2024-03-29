@@ -10,19 +10,16 @@ class DestinationController extends Controller
 {
     public function index()
     {
-        // Controlla se c'è una destinazione salvata nel cookie
-        $destination = null;
-        if (Cookie::has('destination')) {
-            $destination = json_decode(Cookie::get('destination'));
-        } else {
-            // Se non c'è, recupera una destinazione casuale
-            $destination = Destination::inRandomOrder()->first();
-            // Salva la destinazione nel cookie con scadenza di 24 ore
-            Cookie::queue('destination', $destination->toJson(), 1440);
-        }
+        // Recupera una destinazione casuale
+        $destination = Destination::inRandomOrder()->first();
+
+        // Imposta il cookie per la destinazione con scadenza di 24 ore
+        $response = new Response('Set Destination Cookie');
+        $response->cookie('destination', $destination->toJson(), 1440);
 
         return $destination;
     }
+    
     
     public function showAll()
     {

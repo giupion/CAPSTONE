@@ -4,15 +4,24 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Destination;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Support\Facades\DB;
 class DestinationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
+     * 
+     * 
      */
+
+    
+     
+   
+
+
     public function run()
     {
         $destinations = [
@@ -76,22 +85,52 @@ class DestinationSeeder extends Seeder
 ];
 
 foreach ($destinations as $destination) {
-    $response = Http::get('https://api.unsplash.com/photos/random', [
-        'query' => $destination['name'],
-        'client_id' => 'DY6Yrc7v_4Fv3wV9FhlUsktBrFHnSxpbStHGT37FElI',
-        'count' => 1,
-    ]);
+    $imageUrl = $this->fetchImageUrl($destination['name']);
+    $videoUrl = $this->fetchVideoUrl($destination['name']);
 
-    if ($response->successful()) {
-        $imageUrl = $response->json()[0]['urls']['regular'];
-        $destination['image_url'] = $imageUrl;
-    }
-
-    Destination::create([
-        'name' => $destination['name'],
-        'description' => $destination['description'],
-        'image_url' => isset($destination['image_url']) ? $destination['image_url'] : null,
-    ]);
+    Destination::updateOrCreate(
+        ['name' => $destination['name']],
+        [
+            'description' => $destination['description'],
+            'image_url' => $imageUrl,
+            'video_url' => $videoUrl,
+        ]
+    );
 }
+}
+
+private function fetchImageUrl($query)
+{
+$response = Http::get('https://api.unsplash.com/photos/random', [
+    'query' => $query,
+    'client_id' => 'DY6Yrc7v_4Fv3wV9FhlUsktBrFHnSxpbStHGT37FElI',
+    'count' => 1,
+]);
+
+if ($response->successful()) {
+    $data = $response->json();
+    if (!empty($data) && isset($data[0]['urls']['regular'])) {
+        return $data[0]['urls']['regular'];
+    }
+}
+
+return null;
+}
+
+private function fetchVideoUrl($query)
+{
+$response = Http::get('https://pixabay.com/api/videos', [
+    'key' => '43134652-04b8236516dac742aa1b77fb5',
+    'q' => $query,
+]);
+
+if ($response->successful()) {
+    $data = $response->json();
+    if (!empty($data['hits'])) {
+        return $data['hits'][0]['videos']['large']['url'] ?? null;
+    }
+}
+
+return null;
 }
 }
