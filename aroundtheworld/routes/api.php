@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 use App\Http\Controllers\DestinationController;
 
 Route::get('/destinations', [DestinationController::class, 'index']);
+Route::get('/random-destination', [DestinationController::class, 'getRandomDestination']);

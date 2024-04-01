@@ -4,15 +4,30 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
-    const [destination, setDestination] = useState(
-        JSON.parse(localStorage.getItem('destination')) || null
-    );
+    const [destination, setDestination] = useState(null);
 
     useEffect(() => {
-        // Verifica se c'è una destinazione salvata nel localStorage
+        const fetchRandomDestination = async () => {
+            try {
+                const response = await fetch('/api/random-destination');
+                if (response.ok) {
+                    const data = await response.json();
+                    setDestination(data.destination);
+                    localStorage.setItem('destination', JSON.stringify({ ...data.destination, expiresAt: Date.now() + 24 * 60 * 60 * 1000 })); // Salva la destinazione con il timestamp di scadenza
+                } else {
+                    console.error('Failed to fetch random destination:', response.status);
+                }
+            } catch (error) {
+                console.error('Error fetching random destination:', error);
+            }
+        };
+
+        // Verifica se c'è una destinazione salvata in localStorage e se è ancora valida
         const storedDestination = JSON.parse(localStorage.getItem('destination'));
-        if (storedDestination) {
+        if (storedDestination && storedDestination.expiresAt > Date.now()) {
             setDestination(storedDestination);
+        } else {
+            fetchRandomDestination();
         }
     }, []);
 
@@ -20,7 +35,7 @@ export default function Dashboard({ auth }) {
         <AuthenticatedLayout
             user={auth.user}
             header={(
-                <nav className="bg-gray-800 rounded-lg" aria-label="Destinations" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}> {/* Cambia il colore della navbar qui */}
+                <nav className="bg-gray-800 rounded-lg" aria-label="Destinations" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                         <div className="flex items-center justify-between h-full">
                             <div className="flex items-center">
@@ -43,8 +58,8 @@ export default function Dashboard({ auth }) {
         >
             <Head title="Dashboard" />
 
-            <div className="py-12" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}> {/* Cambia il colore dello sfondo del contenitore principale */}
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}> {/* Cambia il colore dello sfondo del riquadro principale */}
+            <div className="py-12" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}>
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4" style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}>
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         {destination ? (
                             <div>

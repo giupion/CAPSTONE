@@ -13,9 +13,12 @@ class DestinationController extends Controller
         // Recupera una destinazione casuale
         $destination = Destination::inRandomOrder()->first();
 
+        // Serializza la destinazione in formato JSON
+        $destinationJson = json_encode($destination);
+
         // Imposta il cookie per la destinazione con scadenza di 24 ore
         $response = new Response('Set Destination Cookie');
-        $response->cookie('destination', $destination->toJson(), 1440);
+        $response->cookie('destination', $destinationJson, 1440);
 
         return $destination;
     }
@@ -32,10 +35,18 @@ class DestinationController extends Controller
     }
 
     private function setDestinationCookie($destination)
-{
-    // Imposta il cookie per la destinazione con scadenza di 24 ore
-    return response()->json(['destination' => $destination])->withCookie(cookie()->forever('destination', $destination->toJson()));
-}
+    {
+        // Serializza la destinazione in formato JSON
+        $destinationJson = json_encode($destination);
 
+        // Imposta il cookie per la destinazione con scadenza di 24 ore
+        return response()->json(['destination' => $destinationJson])->withCookie(cookie()->forever('destination', $destinationJson));
+    }
+
+    public function getRandomDestination()
+{
+    $destination = Destination::inRandomOrder()->first();
+    return response()->json(['destination' => $destination]);
+}
 
 }
