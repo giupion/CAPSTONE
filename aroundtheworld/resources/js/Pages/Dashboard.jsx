@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/react';
 
 export default function Dashboard({ auth }) {
     const [destination, setDestination] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchRandomDestination = async () => {
@@ -31,6 +32,10 @@ export default function Dashboard({ auth }) {
         }
     }, []);
 
+    const handleVacationClick = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -43,13 +48,53 @@ export default function Dashboard({ auth }) {
                                     <h2 className="text-white font-semibold text-lg">AroundTheWorld</h2>
                                 </div>
                             </div>
-                            <div className="ml-4 flex items-center md:ml-6">
+                            <div className="ml-4 flex items-center md:ml-6 relative">
+                                
                                 <InertiaLink
                                     href="/all-destinations"
                                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
                                 >
                                     Tutte le nostre mete
                                 </InertiaLink>
+                                <InertiaLink
+                                    href="/profile-and-reservations"
+                                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
+                                >
+                                    Il mio profilo e prenotazioni
+                                </InertiaLink>
+                                <div className="relative">
+                                    <button
+                                        type="button"
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
+                                        onClick={handleVacationClick}
+                                    >
+                                        Prenota la tua vacanza!
+                                    </button>
+                                    {isMenuOpen && (
+                                        <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                                            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                <InertiaLink
+                                                    href="/book-flight"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                >
+                                                    Prenota il tuo volo
+                                                </InertiaLink>
+                                                <InertiaLink
+                                                    href="/book-hotel"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                >
+                                                    Prenota il tuo hotel
+                                                </InertiaLink>
+                                                <InertiaLink
+                                                    href="/book-car"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                >
+                                                    Prenota la tua macchina
+                                                </InertiaLink>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

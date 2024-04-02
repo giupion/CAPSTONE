@@ -91,20 +91,23 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={route('dashboard')}
+            active={route().current('dashboard')}
+            className={route().current('dashboard') ? 'text-white' : 'text-gray-900'}
+            style={{ backgroundColor: 'rgba(0, 38, 61, 1)' }}>
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">{user.name}</div>
-                            <div className="font-medium text-sm text-gray-500">{user.email}</div>
+                            <div className="font-medium text-base text-white">{user.name}</div>
+                            <div className="font-medium text-sm text-white">{user.email}</div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            <ResponsiveNavLink className="font-medium text-base text-white" href={route('profile.edit')}>Profilo</ResponsiveNavLink>
+                            <ResponsiveNavLink className="font-medium text-base text-white" method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>

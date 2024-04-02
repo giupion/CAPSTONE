@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application; // Modifica questa riga
+use App\Http\Controllers\DestinationController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,12 +21,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION, // Modifica questa riga
+        'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-use App\Http\Controllers\DestinationController;
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -40,6 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/api/destinations', [DestinationController::class, 'showAll']);
     Route::get('/all-destinations', function () {
         return inertia('AllDestinations');
+    });
+
+    Route::get('/book-flight', function () {
+        return Inertia::render('BookFlight');
     });
 });
 
