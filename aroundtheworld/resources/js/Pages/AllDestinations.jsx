@@ -9,6 +9,7 @@ const AllDestinations = ({ auth }) => {
     const [hoveredId, setHoveredId] = useState(null);
     const containerRef = useRef(null);
     const videosRef = useRef({});
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchDestinations = async () => {
@@ -89,6 +90,10 @@ const AllDestinations = ({ auth }) => {
         }
     };
 
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -102,12 +107,41 @@ const AllDestinations = ({ auth }) => {
                                 </div>
                             </div>
                             <div className="ml-4 flex items-center md:ml-6">
-                                <InertiaLink
-                                    href="/book-flight"
-                                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
-                                >
-                                    Prenota un volo
-                                </InertiaLink>
+                                <div className="relative">
+                                    <button
+                                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
+                                        onClick={toggleMenu}
+                                    >
+                                        Prenota la tua vacanza!
+                                    </button>
+                                    {menuOpen && (
+                                        <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg">
+                                            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                <InertiaLink
+                                                    href="/book-flight"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                    role="menuitem"
+                                                >
+                                                    Prenota il tuo volo!
+                                                </InertiaLink>
+                                                <InertiaLink
+                                                    href="/book-hotel"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                    role="menuitem"
+                                                >
+                                                    Prenota il tuo hotel!
+                                                </InertiaLink>
+                                                <InertiaLink
+                                                    href="/rent-car"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                                    role="menuitem"
+                                                >
+                                                    Noleggia la tua macchina!
+                                                </InertiaLink>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                                 <InertiaLink
                                     href="/profile-and-reservations"
                                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
@@ -120,7 +154,7 @@ const AllDestinations = ({ auth }) => {
                 </nav>
             )}
         >
-            <Head title="Dashboard" />
+            <Head title="Tutte le nostre mete" />
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-semibold mb-8 text-white">Tutte le nostre mete</h1>
                 <div
