@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,8 +44,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::get('/book-flight', function () {
-        return Inertia::render('BookFlight');
+        $user = auth()->user(); // Recupera l'utente autenticato
+        $airports = (new DestinationController())->getAirports();
+        return Inertia::render('BookFlight', ['user' => $user, 'airports' => $airports]);
     });
+    
+    
+    Route::get('/api/airports', [DestinationController::class, 'getAirports']);
 });
 
 
