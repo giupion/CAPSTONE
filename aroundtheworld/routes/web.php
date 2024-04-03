@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\FlightSearchController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,7 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('BookFlight', ['user' => $user, 'airports' => $airports]);
     });
     
-    
+    Route::get('/search', 'FlightSearchController@search');
+
     Route::get('/api/airports', [DestinationController::class, 'getAirports']);
 });
 

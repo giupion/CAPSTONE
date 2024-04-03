@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AccessTokenController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,3 +23,4 @@ use App\Http\Controllers\DestinationController;
 
 Route::get('/destinations', [DestinationController::class, 'index']);
 Route::get('/random-destination', [DestinationController::class, 'getRandomDestination']);
+Route::get('/init', AccessTokenController::class);
