@@ -39,28 +39,6 @@ class DestinationController extends Controller
         $destination = Destination::inRandomOrder()->first();
         return response()->json(['destination' => $destination]);
     }
-    public function getAirports()
-    {
-        $destinations = Destination::all();
-        $airports = [];
-        
-        foreach ($destinations as $destination) {
-            // Esegui la richiesta API per ottenere gli aeroporti per ogni destinazione
-            $response = Http::withHeaders([
-                'X-RapidAPI-Key' => '47c233e402mshe486090fb7df9bcp148907jsnf79deff78d0f',
-                'X-RapidAPI-Host' => 'sky-scanner3.p.rapidapi.com'
-            ])->get('https://sky-scanner3.p.rapidapi.com/flights/auto-complete', [
-                'query' => $destination->name
-            ]);
     
-            // Stampa la risposta sulla console
-            dd($response->json());
-    
-            // Estrai gli aeroporti dalla risposta e aggiungili alla lista
-            $airports[$destination->name] = $response->json()['data'];
-        }
-        
-        return $airports;
-    }
     }
 
