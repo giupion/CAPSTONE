@@ -3,11 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\FlightSearchController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -20,42 +17,47 @@ use Inertia\Inertia;
 |
 */
 
+// Welcome Page
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'laravelVersion' => app()->version(),
+        'phpVersion' => phpversion(),
     ]);
 });
 
+// Authenticated Routes
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard
     Route::get('/dashboard', function () {
         $destination = (new DestinationController())->index();
         return Inertia::render('Dashboard', ['destination' => $destination]);
     })->name('dashboard');
 
+    // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Destination Routes
     Route::get('/api/destinations', [DestinationController::class, 'showAll']);
     Route::get('/all-destinations', function () {
         return inertia('AllDestinations');
     });
 
+    // Flight Booking Page
     Route::get('/book-flight', function () {
-        $user = auth()->user(); // Recupera l'utente autenticato
-        $airports = (new DestinationController())->getAirports();
-        return Inertia::render('BookFlight', ['user' => $user, 'airports' => $airports]);
-    });
+        return Inertia::render('BookFlight'); // Assicurati che 'BookFlight' sia il nome corretto del componente React per la pagina di prenotazione del volo
+    })->name('book-flight');
     
-    Route::get('/search', 'FlightSearchController@search');
+    // Flight Search
+    Route::post('/api/search', [FlightSearchController::class, '__invoke'])->name('search');
+    // Modifica la route per la ricerca del volo da GET a POST come definito nel componente React
 
+    // Airport API
     Route::get('/api/airports', [DestinationController::class, 'getAirports']);
 });
 
-
-
-
+// Authentication Routes
 require __DIR__.'/auth.php';
