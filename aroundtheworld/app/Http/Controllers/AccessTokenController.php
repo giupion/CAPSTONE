@@ -19,8 +19,8 @@ class AccessTokenController extends Controller
                 ],
                 'form_params' => [
                     'grant_type' => 'client_credentials',
-                    'client_id' => env('lE3xvbrZfrrvFDYbYzYFRFzGs7uc3oma'), // Modificato per usare la chiave API corretta
-                    'client_secret' => env('nseAdiv9Uk0fje3i') // Modificato per usare il segreto API corretto
+                    'client_id' => env('AMADEUS_API_KEY'), // Modificato per usare la chiave API corretta
+                    'client_secret' => env('AMADEUS_API_SECRET') // Modificato per usare il segreto API corretto
                 ]
             ]);
             $response = $response->getBody();
