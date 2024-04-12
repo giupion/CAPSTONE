@@ -1,6 +1,7 @@
 import { Link, Head } from '@inertiajs/react';
+import { version as inertiaVersion } from '@inertiajs/inertia';
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth, phpVersion }) {
     return (
         <>
             <Head title="Welcome" />
@@ -34,7 +35,7 @@ export default function Welcome({ auth }) {
 
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex justify-center">
-                        <h1 className="text-3xl font-bold text-center text-orange-400">Around the world!</h1>
+                        <h1 className="text-3xl font-bold text-center text-orange-400">Around the World!</h1>
                     </div>
 
                     <div className="mt-16">
@@ -51,10 +52,9 @@ export default function Welcome({ auth }) {
                 </div>
             </div>
 
-            <footer class="text-center py-4 bg-gray-200 text-sm">
-    &copy; 2024 Giuseppe Sansone. Tutti i diritti riservati.
-</footer>
-
+            <footer className="text-center py-4 bg-gray-200 text-sm">
+                &copy; 2024 Giuseppe Sansone. Tutti i diritti riservati. - PHP versione {phpVersion} - Inertia versione {inertiaVersion}
+            </footer>
 
             <style>{`
                 .animate-gradient {
