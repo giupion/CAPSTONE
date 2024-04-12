@@ -40,27 +40,27 @@ export default function Welcome({ auth, phpVersion }) {
 
                     <div className="mt-16">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                            {/* Rimuovi i blocchi di contenuto relativi a Laravel */}
+                           
                         </div>
                     </div>
 
                     <div className="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
                         <div className="text-center text-sm sm:text-start">&nbsp;</div>
 
-                        {/* Mantieni solo la versione di Laravel e PHP */}
+                      
                     </div>
                 </div>
             </div>
 
             <footer className="text-center py-4 bg-gray-200 text-sm">
-                &copy; 2024 Giuseppe Sansone. Tutti i diritti riservati. - PHP versione {phpVersion} - Inertia versione {inertiaVersion}
+                &copy; 2024 Giuseppe Sansone. Tutti i diritti riservati. - PHP versione {phpVersion} 
             </footer>
 
             <style>{`
                 .animate-gradient {
                     background: linear-gradient(45deg, #1a237e 0%, #1565c0 33%, #ffffff 67%);
                     background-size: 400% 400%;
-                    animation: gradientAnimation 10s ease infinite;
+                    animation: gradientAnimation 5s ease infinite;
                 }
 
                 @keyframes gradientAnimation {
