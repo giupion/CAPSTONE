@@ -18,14 +18,14 @@ export default function Welcome({ auth, phpVersion }) {
                         <>
                             <Link
                                 href={route('login')}
-                                className="font-semibold text-orange-400 mr-4 hover:no-underline"
+                                className="font-semibold text-gold mr-4 hover:no-underline" // Colore dorato
                             >
                                 Log in
                             </Link>
 
                             <Link
                                 href={route('register')}
-                                className="font-semibold text-orange-400 hover:no-underline"
+                                className="font-semibold text-gold hover:no-underline" // Colore dorato
                             >
                                 Register
                             </Link>
@@ -35,7 +35,7 @@ export default function Welcome({ auth, phpVersion }) {
 
                 <div className="max-w-7xl mx-auto p-6 lg:p-8">
                     <div className="flex justify-center">
-                        <h1 className="text-3xl font-bold text-center text-orange-400">Around the World!</h1>
+                        <h1 className="text-3xl font-bold text-center text-gold">Around the World!</h1> {/* Colore dorato */}
                     </div>
 
                     <div className="mt-16">
