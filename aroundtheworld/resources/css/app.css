@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* Animazione del gradiente */
 .animate-gradient {
     background: linear-gradient(45deg, #1a237e 0%, #1565c0 33%, #ffffff 67%);
     background-size: 400% 400%;
@@ -21,7 +21,34 @@
     }
 }
 
-
+/* Stile per il testo dorato */
 .text-gold {
     color: #daa520;
+}
+
+/* Stile per i bottoni di ricerca */
+.search-button {
+    background-color: #007bff; /* Colore di sfondo dei bottoni */
+    color: white; /* Colore del testo dei bottoni */
+    padding: 10px 20px; /* Spazio interno ai bottoni */
+    border: none; /* Rimuove il bordo dei bottoni */
+    border-radius: 5px; /* Angoli arrotondati dei bottoni */
+    margin-right: 10px; /* Spazio tra i bottoni */
+}
+
+/* Stile per gli elementi della lista delle città */
+.city-item {
+    color: white; /* Colore del testo delle città */
+    text-transform: uppercase; /* Testo in maiuscolo */
+}
+
+/* Stile per i risultati della ricerca */
+.city-results {
+    margin-top: 20px; /* Spazio sopra e sotto ai risultati delle città */
+}
+
+/* Stile per il titolo dei risultati della ricerca */
+.search-results-title {
+    color: white; /* Colore del testo */
+    text-transform: uppercase; /* Testo in maiuscolo */
 }
