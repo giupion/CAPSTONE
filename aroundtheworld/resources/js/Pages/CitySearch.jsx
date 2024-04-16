@@ -98,21 +98,21 @@ const CitySearch = ({ auth }) => {
                         <button className="search-button" onClick={() => handleSearch(departureKeyword, setDepartureResults)}>Cerca città di partenza</button>
                     </div>
                     <div className="input-container" style={{ marginBottom: '20px' }}>
-                        <input type="text" value={arrivalKeyword} onChange={handleArrivalChange} placeholder="Città di arrivo" />
-                        {arrivalResults.length > 0 && (
-                            <div className="city-results" style={{ marginBottom: '20px' }}>
-                                <h2 className="search-results-title" style={{ color: 'white' }}>Risultati della ricerca per città di arrivo:</h2>
-                                <Slider {...carouselSettings}>
-                                    {arrivalResults.map((city) => (
-                                        <div key={city.iataCode}>
-                                            <p style={{ color: 'white' }}>{city.name} - {city.iataCode}</p>
-                                        </div>
-                                    ))}
-                                </Slider>
-                            </div>
-                        )}
-                        <button className="search-button" onClick={() => handleSearch(arrivalKeyword, setArrivalResults)}>Cerca città di arrivo</button>
+    <input type="text" value={arrivalKeyword} onChange={handleArrivalChange} placeholder="Città di arrivo" />
+    {arrivalResults.length > 0 && (
+        <div className="city-results" style={{ marginBottom: '20px' }}>
+            <h2 className="search-results-title" style={{ color: 'white' }}>Risultati della ricerca per città di arrivo:</h2>
+            <Slider {...carouselSettings}>
+                {arrivalResults.map((city) => (
+                    <div key={city.iataCode}>
+                        <p style={{ color: 'white' }}>{city.name} - {city.iataCode}</p>
                     </div>
+                ))}
+            </Slider>
+        </div>
+    )}
+    <button className="search-button" onClick={() => handleSearch(arrivalKeyword, setArrivalResults)}>Cerca città di arrivo</button>
+</div>
                 </div>
             </div>
 
