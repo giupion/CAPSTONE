@@ -5,7 +5,7 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\FlightSearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\CitySearchController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,7 +58,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Airport API
     Route::get('/api/airports', [DestinationController::class, 'getAirports']);
-});
+    
 
+    Route::get('/api/cities', [CitySearchController::class, 'search']);});
+  
+
+    Route::get('/city-search', [CitySearchController::class, 'index'])->name('city-search');
+    
 // Authentication Routes
 require __DIR__.'/auth.php';
