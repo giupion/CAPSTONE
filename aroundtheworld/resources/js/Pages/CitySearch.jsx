@@ -1,84 +1,64 @@
 import React, { useState } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import Axios from 'axios'; // Importa Axios
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-const CitySearch = ({ auth }) => { // Passa `auth` come props
+const CitySearch = ({ auth }) => {
     const [keyword, setKeyword] = useState('');
     const [cityResults, setCityResults] = useState([]);
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         setKeyword(e.target.value);
     };
 
-    const searchCities = async () => {
+    const handleSearch = async () => {
         try {
-            const response = await Inertia.get('/api/cities', {
-                keyword: keyword
+            const response = await Axios.get('/api/cities', {
+                params: {
+                    keyword: keyword
+                }
             });
-            setCityResults(response.data.data);
+    
+            if (response && response.data && response.data.data) {
+                setCityResults(response.data.data);
+            } else {
+                setCityResults([]);
+            }
         } catch (error) {
+            setError('Errore durante la ricerca delle città.');
             console.error('Errore durante la ricerca delle città:', error);
         }
     };
+    
 
     return (
-        <AuthenticatedLayout user={auth.user}> {/* Usa `auth.user` */}
+        <AuthenticatedLayout user={auth.user}>
             <Head title="City Search" />
 
             <div className="form-container">
                 <input type="text" value={keyword} onChange={handleChange} placeholder="Inserisci il nome della città o il codice IATA" />
-                <button onClick={searchCities}>Cerca città</button>
-                <ul>
-                    {cityResults.map((city) => (
-                        <li key={city.iataCode}>
-                            {city.name} - {city.iataCode}
-                        </li>
-                    ))}
-                </ul>
+                <button onClick={handleSearch}>Cerca città</button>
             </div>
 
-            <style jsx>{`
-                .form-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    margin-top: 2rem;
-                }
-                input {
-                    padding: 0.5rem;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    outline: none;
-                    color: black;
-                    background-color: rgba(0, 0, 0, 0.3);
-                    width: 100%;
-                    margin-bottom: 1rem;
-                }
-                button {
-                    padding: 0.5rem 1rem;
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    width: 100%;
-                }
-                ul {
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                    width: 100%;
-                }
-                li {
-                    padding: 0.5rem;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                    margin-bottom: 0.5rem;
-                    background-color: rgba(0, 0, 0, 0.1);
-                }
-            `}</style>
+            {error && (
+                <div className="error">
+                    <p>{error}</p>
+                </div>
+            )}
+
+            {cityResults.length > 0 && (
+                <div className="city-results">
+                    <h2>Risultati della ricerca</h2>
+                    <ul>
+                        {cityResults.map((city) => (
+                            <li key={city.iataCode}>
+                                {city.name} - {city.iataCode}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 };

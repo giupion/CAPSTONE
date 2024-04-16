@@ -1,8 +1,5 @@
 <?php
 
-
-// app/Http/Controllers/CitySearchController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
