@@ -3,8 +3,11 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { InertiaLink } from '@inertiajs/inertia-react';
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+
 
 const FlightSearchForm = ({ auth }) => {
     const [formData, setFormData] = useState({
@@ -75,7 +78,10 @@ const FlightSearchForm = ({ auth }) => {
                     </Slider>
                 </div>
             </div>
-
+            <div style={{ color: 'white' }}>
+                <p>Seleziona gli aeroporti e premi <strong>Conferma</strong> per prenotare i voli.</p>
+                <InertiaLink href="/book-flight" className="confirm-button" data={{ formData }}>Conferma</InertiaLink>
+            </div>
             <style jsx>{`
                 .form-container {
                     display: flex;
@@ -123,6 +129,16 @@ const FlightSearchForm = ({ auth }) => {
                 }
                 .flight-card p {
                     margin-bottom: 0.5rem;
+                }
+                .confirm-button {
+                    margin-top: 1rem;
+                    padding: 0.5rem 1rem;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-decoration: none;
                 }
             `}</style>
         </AuthenticatedLayout>

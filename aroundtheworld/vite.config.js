@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     laravel({
       input: 'resources/js/app.jsx',
-      refresh: true,
+      // Non è necessario impostare `refresh` qui, Inertia gestirà automaticamente il refresh
     }),
     react(),
   ],

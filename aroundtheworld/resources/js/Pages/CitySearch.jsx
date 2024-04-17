@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios'; // Importa Axios
+import { Inertia } from '@inertiajs/inertia'; // Importa Inertia
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import Slider from 'react-slick'; // Importa Slider da react-slick
@@ -35,6 +36,7 @@ const CitySearch = ({ auth }) => {
     const [arrivalKeyword, setArrivalKeyword] = useState('');
     const [departureResults, setDepartureResults] = useState([]);
     const [arrivalResults, setArrivalResults] = useState([]);
+    const [selectedAirports, setSelectedAirports] = useState([]);
     const [error, setError] = useState(null);
 
     const handleDepartureChange = (e) => {
@@ -52,7 +54,7 @@ const CitySearch = ({ auth }) => {
                     keyword: keyword
                 }
             });
-    
+
             if (response && response.data && response.data.data) {
                 setResult(response.data.data);
             } else {
@@ -61,6 +63,31 @@ const CitySearch = ({ auth }) => {
         } catch (error) {
             setError('Errore durante la ricerca delle città.');
             console.error('Errore durante la ricerca delle città:', error);
+        }
+    };
+
+    const handleFlightBooking = (originLocationCode, destinationLocationCode) => {
+        const updatedSelectedAirports = [...selectedAirports, { origin: originLocationCode, destination: destinationLocationCode }];
+        setSelectedAirports(updatedSelectedAirports);
+    };
+
+    const handleConfirm = () => {
+        // Verifica se ci sono aeroporti selezionati
+        if (selectedAirports.length > 0) {
+            // Estrai i codici IATA dall'array degli aeroporti selezionati
+            const firstAirport = selectedAirports[0];
+            const secondAirport = selectedAirports.length > 1 ? selectedAirports[1] : null;
+
+            // Costruisci l'URL con i codici IATA come parametri
+            let url = '/book-flight?originLocationCode=' + firstAirport.origin + '&destinationLocationCode=' + firstAirport.destination;
+            if (secondAirport) {
+                url += '&originLocationCode2=' + secondAirport.origin + '&destinationLocationCode2=' + secondAirport.destination;
+            }
+
+            // Effettua la navigazione utilizzando Inertia
+            Inertia.visit(url);
+        } else {
+            setError('Seleziona almeno un volo per confermare.');
         }
     };
 
@@ -78,50 +105,69 @@ const CitySearch = ({ auth }) => {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="City Search" />
-
             <div className="form-container" style={{ textAlign: 'center' }}>
                 <div className="search-inputs">
+                    {/* Input per la città di partenza */}
                     <div className="input-container" style={{ marginBottom: '20px' }}>
                         <input type="text" value={departureKeyword} onChange={handleDepartureChange} placeholder="Città di partenza" />
+                        {/* Mostra i risultati della ricerca per la città di partenza */}
                         {departureResults.length > 0 && (
                             <div className="city-results" style={{ marginBottom: '20px' }}>
                                 <h2 className="search-results-title" style={{ color: 'white' }}>Risultati della ricerca per città di partenza:</h2>
                                 <Slider {...carouselSettings}>
                                     {departureResults.map((city) => (
-                                        <div key={city.iataCode}>
-                                            <p style={{ color: 'white' }}>{city.name} - {city.iataCode}</p>
-                                        </div>
+                                        <FlightCard key={city.iataCode} city={city} handleFlightBooking={handleFlightBooking} />
                                     ))}
                                 </Slider>
                             </div>
                         )}
                         <button className="search-button" onClick={() => handleSearch(departureKeyword, setDepartureResults)}>Cerca città di partenza</button>
                     </div>
+                    {/* Input per la città di arrivo */}
                     <div className="input-container" style={{ marginBottom: '20px' }}>
-    <input type="text" value={arrivalKeyword} onChange={handleArrivalChange} placeholder="Città di arrivo" />
-    {arrivalResults.length > 0 && (
-        <div className="city-results" style={{ marginBottom: '20px' }}>
-            <h2 className="search-results-title" style={{ color: 'white' }}>Risultati della ricerca per città di arrivo:</h2>
-            <Slider {...carouselSettings}>
-                {arrivalResults.map((city) => (
-                    <div key={city.iataCode}>
-                        <p style={{ color: 'white' }}>{city.name} - {city.iataCode}</p>
+                        <input type="text" value={arrivalKeyword} onChange={handleArrivalChange} placeholder="Città di arrivo" />
+                        {/* Mostra i risultati della ricerca per la città di arrivo */}
+                        {arrivalResults.length > 0 && (
+                            <div className="city-results" style={{ marginBottom: '20px' }}>
+                                <h2 className="search-results-title" style={{ color: 'white' }}>Risultati della ricerca per città di arrivo:</h2>
+                                <Slider {...carouselSettings}>
+                                    {arrivalResults.map((city) => (
+                                        <FlightCard key={city.iataCode} city={city} handleFlightBooking={handleFlightBooking} />
+                                    ))}
+                                </Slider>
+                            </div>
+                        )}
+                        <button className="search-button" onClick={() => handleSearch(arrivalKeyword, setArrivalResults)}>Cerca città di arrivo</button>
                     </div>
-                ))}
-            </Slider>
-        </div>
-    )}
-    <button className="search-button" onClick={() => handleSearch(arrivalKeyword, setArrivalResults)}>Cerca città di arrivo</button>
-</div>
                 </div>
             </div>
-
+            {/* Visualizza gli aeroporti selezionati */}
+            <div className="selected-airports">
+                <h2 style={{ color: 'white' }}>Aeroporti Selezionati:</h2>
+                <ul>
+                    {selectedAirports.map((airport, index) => (
+                        <li key={index} style={{ color: 'white' }}>{airport.origin} - {airport.destination}</li>
+                    ))}
+                </ul>
+            </div>
+            {/* Bottone di conferma per prenotare i voli */}
+            <button className="search-button" onClick={handleConfirm}>Conferma</button>
+            {/* Visualizza l'eventuale errore */}
             {error && (
                 <div className="error">
                     <p>{error}</p>
                 </div>
             )}
         </AuthenticatedLayout>
+    );
+};
+
+// Componente per il singolo aeroporto
+const FlightCard = ({ city, handleFlightBooking }) => {
+    return (
+        <div onClick={() => handleFlightBooking('', city.iataCode)}>
+            <p style={{ color: 'white' }}>{city.name} - {city.iataCode}</p>
+        </div>
     );
 };
 
