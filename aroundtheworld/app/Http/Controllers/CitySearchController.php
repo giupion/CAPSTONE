@@ -23,7 +23,8 @@ class CitySearchController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken->token
             ])->get('https://test.api.amadeus.com/v1/reference-data/locations', [
-                'subType' => 'CITY',
+                'subType' => 'CITY,AIRPORT',
+                
                 'keyword' => $keyword,
                 'view' => 'LIGHT' // Specifica il tipo di visualizzazione, se necessario
             ]);
