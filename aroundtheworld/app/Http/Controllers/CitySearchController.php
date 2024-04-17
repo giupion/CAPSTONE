@@ -25,6 +25,7 @@ class CitySearchController extends Controller
             ])->get('https://test.api.amadeus.com/v1/reference-data/locations', [
                 'subType' => 'CITY',
                 'keyword' => $keyword,
+                'view' => 'LIGHT' // Specifica il tipo di visualizzazione, se necessario
             ]);
 
             if ($response->successful()) {

@@ -61,4 +61,8 @@ class FlightSearchController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+    public function showFlightSearchForm()
+{
+    return inertia('FlightSearchForm');
+}
 }
