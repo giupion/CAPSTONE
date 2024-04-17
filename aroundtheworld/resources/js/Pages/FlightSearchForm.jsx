@@ -43,25 +43,40 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Flight Search" />
 
-            <div className="form-container">
-                <form onSubmit={handleSubmit}>
+            <div className="form-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                <form onSubmit={handleSubmit} style={{ width: '50%', textAlign: 'center' }}>
                     <div className="form-group">
                         <label htmlFor="originLocationCode" style={{ color: 'white' }}>Codice di partenza:</label>
-                        <input type="text" id="originLocationCode" name="originLocationCode" value={formData.originLocationCode} onChange={handleChange} required />
+                        <input type="text" id="originLocationCode" name="originLocationCode" value={formData.originLocationCode} onChange={handleChange} required style={{ width: '100%' }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="destinationLocationCode" style={{ color: 'white' }}>Codice di destinazione:</label>
-                        <input type="text" id="destinationLocationCode" name="destinationLocationCode" value={formData.destinationLocationCode} onChange={handleChange} required />
+                        <input type="text" id="destinationLocationCode" name="destinationLocationCode" value={formData.destinationLocationCode} onChange={handleChange} required style={{ width: '100%' }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="departureDate" style={{ color: 'white' }}>Data di partenza:</label>
-                        <input type="date" id="departureDate" name="departureDate" value={formData.departureDate} onChange={handleChange} required />
+                        <input type="date" id="departureDate" name="departureDate" value={formData.departureDate} onChange={handleChange} required style={{ width: '100%' }} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="adults" style={{ color: 'white' }}>Numero di adulti:</label>
-                        <input type="number" id="adults" name="adults" value={formData.adults} onChange={handleChange} required />
+                        <input type="number" id="adults" name="adults" value={formData.adults} onChange={handleChange} required style={{ width: '100%' }} />
                     </div>
-                    <button type="submit">Cerca volo</button>
+                    <button
+    type="submit"
+    style={{
+        width: '100%',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        padding: '14px 20px',
+        margin: '8px 0',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s'
+    }}
+>
+    Cerca volo
+</button>
                 </form>
                 <div className="slider-container">
                     <Slider {...settings}>
@@ -80,9 +95,27 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
                 <p>Seleziona gli aeroporti e premi <strong>Conferma</strong> per prenotare i voli.</p>
                 <InertiaLink href="/book-flight" className="confirm-button" data={{ formData }}>Conferma</InertiaLink>
             </div>
-            <style jsx>{`
-                // Stili CSS rimossi per brevità
-            `}</style>
+           
+
+<style jsx>{`
+    .slider-container {
+        width: 80%; /* Modifica la larghezza del container del carousel secondo le tue preferenze */
+        margin: 20px auto; /* Centra il container orizzontalmente sulla pagina */
+    }
+
+    .flight-card {
+        background-color: #333; /* Cambia il colore di sfondo della card dei voli */
+        padding: 20px; /* Aggiunge spazio intorno al contenuto della card */
+        margin: 0 10px; /* Aggiunge margine tra le card dei voli */
+        border-radius: 5px; /* Aggiunge angoli arrotondati alla card */
+    }
+
+    .flight-card h3,
+    .flight-card p {
+        margin: 5px 0; /* Aggiusta il margine tra i titoli e i paragrafi all'interno della card */
+    }
+`}</style>
+
         </AuthenticatedLayout>
     );
 };
