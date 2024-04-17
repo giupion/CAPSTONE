@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/api/cities', [CitySearchController::class, 'search']);
     Route::get('/flight-search-form', [FlightSearchController::class, 'showFlightSearchForm'])->name('flight-search-form');
+
     Route::get('/city-search', [CitySearchController::class, 'index'])->name('city-search');});
 
 
