@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import inertiaPlugin from '@inertiajs/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -10,6 +9,5 @@ export default defineConfig({
       refresh: true,
     }),
     react(),
-    inertiaPlugin(),
   ],
 });
