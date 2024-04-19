@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { InertiaLink } from '@inertiajs/inertia-react';
+
 const CitySearch = ({ auth }) => {
     const [departureKeyword, setDepartureKeyword] = useState('');
     const [arrivalKeyword, setArrivalKeyword] = useState('');
@@ -33,19 +34,25 @@ const CitySearch = ({ auth }) => {
     const handleArrivalChange = (e) => setArrivalKeyword(e.target.value);
 
     const handleCitySelect = (city, type) => {
-        if (type === 'departure') setSelectedDeparture(city);
-        else if (type === 'arrival') setSelectedArrival(city);
+        if (type === 'departure') {
+            setSelectedDeparture(city);
+        } else if (type === 'arrival') {
+            setSelectedArrival(city);
+        }
     };
 
     const handleConfirm = () => {
         if (selectedDeparture && selectedArrival) {
             const formData = {
                 originLocationCode: selectedDeparture.iataCode,
-                destinationLocationCode: selectedArrival.iataCode
+                originLocationName: selectedDeparture.name,
+                destinationLocationCode: selectedArrival.iataCode,
+                destinationLocationName: selectedArrival.name
             };
             Inertia.visit(route('flight-search-form', {
-                originLocationCode: formData.originLocationCode,
-                destinationLocationCode: formData.destinationLocationCode
+                ...formData,
+                originCityName: selectedDeparture.name,
+                destinationCityName: selectedArrival.name
             }));
         } else {
             setError('Seleziona un aeroporto di partenza e uno di destinazione.');

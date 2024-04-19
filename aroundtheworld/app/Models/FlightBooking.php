@@ -24,6 +24,10 @@ class FlightBooking extends Model
         'bookable_seats',
         'instant_ticketing_required',
         'direct_flight',
+        'origin_city_name',
+        'origin_city_code',
+        'destination_city_name',
+        'destination_city_code',
         // Aggiungi altri campi se necessario
     ];
 
