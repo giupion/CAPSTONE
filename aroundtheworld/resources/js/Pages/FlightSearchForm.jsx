@@ -87,7 +87,7 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
             <p style={{ color: 'white' }}>Durata: {flight.itineraries[0].duration}</p>
             <p style={{ color: 'white' }}>Prezzo totale: {flight.price.total} {flight.price.currency}</p>
             <h3 style={{ color: 'white' }}>Volo {flight.id}</h3>
-                <p style={{ color: 'white' }}>Ultimo ticketing: {flight.lastTicketingDate}</p>
+                <p style={{ color: 'white' }}>Data ultima prenotazione: {flight.lastTicketingDate}</p>
                 <p style={{ color: 'white' }}>Posti prenotabili: {flight.numberOfBookableSeats}</p>
                 <p style={{ color: 'white' }}>Ticket immediato richiesto: {flight.instantTicketingRequired ? 'Sì' : 'No'}</p>
                 <p style={{ color: 'white' }}>Volo diretto: {flight.oneWay ? 'Sì' : 'No'}</p>{/* Aggiungi altre informazioni del volo che desideri mostrare */}
