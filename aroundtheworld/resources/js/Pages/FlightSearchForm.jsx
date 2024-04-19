@@ -31,6 +31,32 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
         }
     };
 
+
+
+    const handleBookFlight = async (flight) => {
+        try {
+            if (!flight.price) {
+                throw new Error('Il prezzo del volo non è definito');
+            }
+            const response = await axios.post('/api/book-flight', {
+                flight_id: flight.id,
+                carrier_code: flight.itineraries[0].segments[0].carrierCode,
+                duration: flight.itineraries[0].duration,
+                total_price: flight.price.total,
+                booking_deadline: flight.lastTicketingDate,
+                bookable_seats: flight.numberOfBookableSeats,
+                instant_ticketing_required: flight.instantTicketingRequired,
+                direct_flight: flight.oneWay
+                // Aggiungi altri campi se necessario
+            });
+            console.log(response.data.message);
+        } catch (error) {
+            console.error('Errore durante la prenotazione del volo:', error);
+        }
+    };
+    
+
+    
     const settings = {
         dots: false,
         infinite: true,
@@ -85,22 +111,34 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
             <h3 style={{ color: 'white' }}>Volo {flight.id}</h3>
             <p style={{ color: 'white' }}>Compagnia aerea: {flight.itineraries[0].segments[0].carrierCode}</p>
             <p style={{ color: 'white' }}>Durata: {flight.itineraries[0].duration}</p>
-            <p style={{ color: 'white' }}>Prezzo totale: {flight.price.total} {flight.price.currency}</p>
+            <p style={{ color: 'white' }}>Prezzo totale: {flight.price && flight.price.total} {flight.price && flight.price.currency}</p>
+
             <h3 style={{ color: 'white' }}>Volo {flight.id}</h3>
                 <p style={{ color: 'white' }}>Data ultima prenotazione: {flight.lastTicketingDate}</p>
                 <p style={{ color: 'white' }}>Posti prenotabili: {flight.numberOfBookableSeats}</p>
                 <p style={{ color: 'white' }}>Ticket immediato richiesto: {flight.instantTicketingRequired ? 'Sì' : 'No'}</p>
                 <p style={{ color: 'white' }}>Volo diretto: {flight.oneWay ? 'Sì' : 'No'}</p>{/* Aggiungi altre informazioni del volo che desideri mostrare */}
+                <button
+    onClick={() => handleBookFlight(flight)} // Passa l'intero oggetto flight invece dell'ID
+    style={{
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        padding: '8px 16px',
+        margin: '8px 0',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer'
+    }}
+>
+    Prenota questo volo
+</button>
         </div>
     ))}
 </Slider>
 
                 </div>
             </div>
-            <div style={{ color: 'white' }}>
-                <p>Seleziona gli aeroporti e premi <strong>Conferma</strong> per prenotare i voli.</p>
-                <InertiaLink href="/book-flight" className="confirm-button" data={{ formData }}>Conferma</InertiaLink>
-            </div>
+           
            
 
 <style jsx>{`

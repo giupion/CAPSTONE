@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccessToken;
+use App\Models\FlightBooking;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -57,4 +58,28 @@ class FlightSearchController extends Controller
         return Inertia::render('FlightSearchForm', ['formDataFromCitySearch' => $formDataFromCitySearch]);
     }
     
+    public function bookFlight(Request $request)
+    {
+        // Validazione dei dati della richiesta
+        $validatedData = $request->validate([
+            // Aggiungi qui le regole di validazione per i dati della prenotazione del volo
+        ]);
+
+        // Salva la prenotazione del volo nel database
+        $flightBooking = new FlightBooking();
+        $flightBooking->user_id = auth()->id();
+        $flightBooking->flight_id = $request->input('flight_id');
+        $flightBooking->carrier_code = $request->input('carrier_code');
+        $flightBooking->duration = $request->input('duration');
+        $flightBooking->total_price = $request->input('total_price');
+        $flightBooking->booking_deadline = $request->input('booking_deadline');
+        $flightBooking->bookable_seats = $request->input('bookable_seats');
+        $flightBooking->instant_ticketing_required = $request->input('instant_ticketing_required');
+        $flightBooking->direct_flight = $request->input('direct_flight');
+        // Continua ad assegnare altri campi se necessario
+
+        $flightBooking->save();
+
+        return response()->json(['message' => 'Prenotazione del volo effettuata con successo'], 201);
+    }
 }
