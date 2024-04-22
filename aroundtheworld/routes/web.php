@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/api/airports', [DestinationController::class, 'getAirports']);
     Route::get('/api/cities', [CitySearchController::class, 'search']);
     Route::get('/city-search', [CitySearchController::class, 'index'])->name('city-search');
+    Route::get('/flight-reservations', [FlightSearchController::class, 'showFlightReservations'])->name('flight-reservations.index');
 });
 
 require __DIR__.'/auth.php';

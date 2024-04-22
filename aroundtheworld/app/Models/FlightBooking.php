@@ -9,11 +9,6 @@ class FlightBooking extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'user_id',
         'flight_id',
@@ -24,16 +19,11 @@ class FlightBooking extends Model
         'bookable_seats',
         'instant_ticketing_required',
         'direct_flight',
-        'origin_city_name',
         'origin_city_code',
-        'destination_city_name',
         'destination_city_code',
-        // Aggiungi altri campi se necessario
+        // Add other fields if needed
     ];
 
-    /**
-     * Get the user that owns the flight booking.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
