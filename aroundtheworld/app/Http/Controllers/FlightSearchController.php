@@ -59,29 +59,48 @@ class FlightSearchController extends Controller
     }
     
     public function bookFlight(Request $request)
-{
-    // Validazione dei dati della richiesta
-   
+    {
+        // Validazione dei dati della richiesta
+        $request->validate([
+            'flight_id' => 'required',
+            'carrier_code' => 'required',
+            'duration' => 'required',
+            'total_price' => 'required',
+            'booking_deadline' => 'required',
+            'bookable_seats' => 'required',
+            'instant_ticketing_required' => 'required',
+            'direct_flight' => 'required',
 
-    // Salva la prenotazione del volo nel database
-    $flightBooking = new FlightBooking();
-    $flightBooking->user_id = auth()->id();
-    $flightBooking->flight_id = $request->input('flight_id');
-    $flightBooking->carrier_code = $request->input('carrier_code');
-    $flightBooking->duration = $request->input('duration');
-    $flightBooking->total_price = $request->input('total_price');
-    $flightBooking->booking_deadline = $request->input('booking_deadline');
-    $flightBooking->bookable_seats = $request->input('bookable_seats');
-    $flightBooking->instant_ticketing_required = $request->input('instant_ticketing_required');
-    $flightBooking->direct_flight = $request->input('direct_flight');
-    $flightBooking->origin_city_name = $request->input('origin_city_name');
-    $flightBooking->origin_city_code = $request->input('origin_city_code');
-    $flightBooking->destination_city_name = $request->input('destination_city_name');
-    $flightBooking->destination_city_code = $request->input('destination_city_code');
-    // Continua ad assegnare altri campi se necessario
+            'origin_city_code' => 'required',
+          
+            'destination_city_code' => 'required',
+            // Aggiungi altre regole di validazione se necessario
+        ]);
 
-    $flightBooking->save();
+        try {
+            // Salva la prenotazione del volo nel database
+            FlightBooking::create([
+                'user_id' => auth()->id(), // Se l'utente è autenticato, puoi ottenere il suo ID così
+                'flight_id' => $request->input('flight_id'),
+                'carrier_code' => $request->input('carrier_code'),
+                'duration' => $request->input('duration'),
+                'total_price' => $request->input('total_price'),
+                'booking_deadline' => $request->input('booking_deadline'),
+                'bookable_seats' => $request->input('bookable_seats'),
+                'instant_ticketing_required' => $request->input('instant_ticketing_required'),
+                'direct_flight' => $request->input('direct_flight'),
+                
+                'origin_city_code' => $request->input('origin_city_code'),
+                
+                'destination_city_code' => $request->input('destination_city_code'),
+                // Continua ad aggiungere altri campi se necessario
+            ]);
 
-    return response()->json(['message' => 'Prenotazione del volo effettuata con successo'], 201);
-}
+            return response()->json(['message' => 'Prenotazione del volo effettuata con successo'], 201);
+        } catch (\Exception $exception) {
+            // Gestione degli errori
+            Log::error('Errore durante la prenotazione del volo: ' . $exception->getMessage());
+            return response()->json(['error' => 'Errore durante la prenotazione del volo'], 500);
+        }
+    }
 }
