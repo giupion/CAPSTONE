@@ -103,4 +103,13 @@ class FlightSearchController extends Controller
             return response()->json(['error' => 'Errore durante la prenotazione del volo'], 500);
         }
     }
+
+    public function showFlightReservations(Request $request)
+    {
+        // Ottenere le prenotazioni dei voli dell'utente
+        $flightReservations = FlightBooking::where('user_id', auth()->id())->get();
+        
+        // Restituisci la vista con le prenotazioni dei voli
+        return Inertia::render('FlightReservations', ['flightReservations' => $flightReservations]);
+    }
 }

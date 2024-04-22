@@ -143,11 +143,11 @@ const AllDestinations = ({ auth }) => {
                                     )}
                                 </div>
                                 <InertiaLink
-                                    href="/profile-and-reservations"
-                                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
-                                >
-                                    Il mio profilo e prenotazioni
-                                </InertiaLink>
+    href="/flight-reservations"
+    className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-sm font-medium"
+>
+    Il mio profilo e prenotazioni
+</InertiaLink>
                             </div>
                         </div>
                     </div>
