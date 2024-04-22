@@ -1,4 +1,3 @@
-// FlightSearchForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
@@ -18,6 +17,7 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
         adults: ''
     });
     const [searchResults, setSearchResults] = useState([]);
+    const [bookingSuccess, setBookingSuccess] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,12 +49,12 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
                 instant_ticketing_required: flight.instantTicketingRequired,
                 direct_flight: flight.oneWay,
                 origin_city_name: formData.originLocationName,
-            origin_city_code: formData.originLocationCode,
-            destination_city_name: formData.destinationLocationName,
-            destination_city_code: formData.destinationLocationCode
-                // Aggiungi altri campi se necessario
+                origin_city_code: formData.originLocationCode,
+                destination_city_name: formData.destinationLocationName,
+                destination_city_code: formData.destinationLocationCode
             });
             console.log(response.data.message);
+            setBookingSuccess(true);
         } catch (error) {
             console.error('Errore durante la prenotazione del volo:', error);
         }
@@ -106,6 +106,10 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
                         Cerca volo
                     </button>
                 </form>
+                {bookingSuccess && (
+                    <div style={{ color: 'green', fontSize: '1.5em', marginTop: '20px' }}>Prenotazione effettuata con successo!</div>
+
+                )}
                 <div className="slider-container">
                     <Slider {...settings}>
                         {searchResults.map((flight) => (
@@ -141,20 +145,20 @@ const FlightSearchForm = ({ auth, formDataFromCitySearch }) => {
             </div>
             <style jsx>{`
                 .slider-container {
-                    width: 80%; /* Modifica la larghezza del container del carousel secondo le tue preferenze */
-                    margin: 20px auto; /* Centra il container orizzontalmente sulla pagina */
+                    width: 80%;
+                    margin: 20px auto;
                 }
 
                 .flight-card {
-                    background-color: #333; /* Cambia il colore di sfondo della card dei voli */
-                    padding: 20px; /* Aggiunge spazio intorno al contenuto della card */
-                    margin: 0 10px; /* Aggiunge margine tra le card dei voli */
-                    border-radius: 5px; /* Aggiunge angoli arrotondati alla card */
+                    background-color: #333;
+                    padding: 20px;
+                    margin: 0 10px;
+                    border-radius: 5px;
                 }
 
                 .flight-card h3,
                 .flight-card p {
-                    margin: 5px 0; /* Aggiusta il margine tra i titoli e i paragrafi all'interno della card */
+                    margin: 5px 0;
                 }
             `}</style>
         </AuthenticatedLayout>
