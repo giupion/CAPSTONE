@@ -39,7 +39,7 @@ const FlightReservations = ({ auth, flightReservations }) => {
                             <p className="font-semibold text-white">Aeroporto Origine: {reservation.origin_city_code}</p>
                             <p className="font-semibold text-white"> Aeroporto Destinazione: {reservation.destination_city_code}</p>
                             <p className="font-semibold text-white">Durata: {reservation.duration}</p>
-                            <p className="font-semibold text-white">Prezzo totale: {reservation.total_price}</p>
+                            <p className="font-semibold text-white">Prezzo totale:€ {reservation.total_price}</p>
                             <p className="font-semibold text-white">Scadenza prenotazione: {reservation.booking_deadline}</p>
                             <p className="font-semibold text-white">Posti prenotabili: {reservation.bookable_seats}</p>
                             <p className="font-semibold text-white">Richiesta di biglietto immediata: {reservation.instant_ticketing_required ? 'Sì' : 'No'}</p>
