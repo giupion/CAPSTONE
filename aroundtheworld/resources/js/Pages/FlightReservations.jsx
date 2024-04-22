@@ -2,33 +2,11 @@ import React, { useEffect, useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-const FlightReservations = ({ auth }) => {
-    const [flightReservations, setFlightReservations] = useState([]);
-    const [loading, setLoading] = useState(true);
+const FlightReservations = ({ auth, flightReservations }) => {
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchFlightReservations = async () => {
-            try {
-                const response = await fetch('/api/flight-reservations');
-                if (response.ok) {
-                    const data = await response.json();
-                    setFlightReservations(data.flightReservations);
-                    setLoading(false);
-                } else {
-                    setError(`Failed to fetch flight reservations: ${response.status}`);
-                }
-            } catch (error) {
-                setError(`Error fetching flight reservations: ${error.message}`);
-            }
-        };
-
-        if (auth.user) {
-            fetchFlightReservations();
-        }
-
-        return () => setLoading(true); // Reset loading state when component unmounts or auth.user changes
-    }, [auth.user]);
+    // Rimuovi l'hook useEffect perché i dati sono passati direttamente come props
 
     if (loading) {
         return (
@@ -52,14 +30,20 @@ const FlightReservations = ({ auth }) => {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Flight Reservations" />
             <div className="py-12">
+            <h1 className="text-3xl font-semibold mb-6 text-white">I Tuoi Voli!</h1>
                 {flightReservations.length > 0 ? (
                     flightReservations.map((reservation) => (
                         <div key={reservation.id} className="border p-4 rounded-md">
-                            <p className="font-semibold">ID Prenotazione: {reservation.id}</p>
-                            <p>Compagnia aerea: {reservation.carrier_code}</p>
-                            <p>Origine: {reservation.origin_city_code}</p>
-                            <p>Destinazione: {reservation.destination_city_code}</p>
-                            {/* Add other reservation details if needed */}
+                            <p className="font-semibold text-white">ID Prenotazione: {reservation.id}</p>
+                            <p className="font-semibold text-white">Compagnia aerea: {reservation.carrier_code}</p>
+                            <p className="font-semibold text-white">Aeroporto Origine: {reservation.origin_city_code}</p>
+                            <p className="font-semibold text-white"> Aeroporto Destinazione: {reservation.destination_city_code}</p>
+                            <p className="font-semibold text-white">Durata: {reservation.duration}</p>
+                            <p className="font-semibold text-white">Prezzo totale: {reservation.total_price}</p>
+                            <p className="font-semibold text-white">Scadenza prenotazione: {reservation.booking_deadline}</p>
+                            <p className="font-semibold text-white">Posti prenotabili: {reservation.bookable_seats}</p>
+                            <p className="font-semibold text-white">Richiesta di biglietto immediata: {reservation.instant_ticketing_required ? 'Sì' : 'No'}</p>
+                            <p className="font-semibold text-white">Volo diretto: {reservation.direct_flight ? 'Sì' : 'No'}</p>{/* Aggiungi altri dettagli della prenotazione se necessario */}
                         </div>
                     ))
                 ) : (

@@ -49,13 +49,13 @@ class FlightSearchController extends Controller
         }
     }
 
-    public function showFlightSearchForm(Request $request)
+    public function showFlightReservations(Request $request)
     {
-        $formDataFromCitySearch = [
-            'originLocationCode' => $request->input('originLocationCode'),
-            'destinationLocationCode' => $request->input('destinationLocationCode')
-        ];
-        return Inertia::render('FlightSearchForm', ['formDataFromCitySearch' => $formDataFromCitySearch]);
+        // Ottenere le prenotazioni dei voli dell'utente
+        $flightReservations = FlightBooking::where('user_id', auth()->id())->get();
+        
+        // Restituisci la vista con le prenotazioni dei voli
+        return Inertia::render('FlightReservations', ['flightReservations' => $flightReservations]);
     }
     
     public function bookFlight(Request $request)
@@ -104,13 +104,5 @@ class FlightSearchController extends Controller
         }
     }
 
-    public function showFlightReservations(Request $request)
-{
-    // Ottenere le prenotazioni dei voli dell'utente
-    $flightReservations = FlightBooking::where('user_id', auth()->id())->get();
-    
-    // Restituisci la vista con le prenotazioni dei voli
-    return Inertia::render('FlightReservations', ['flightReservations' => $flightReservations]);
-}
-
+   
 }
