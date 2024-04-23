@@ -7,6 +7,7 @@ use App\Models\Destination;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 //nuovo ramo
+//sul main?
 class DestinationController extends Controller
 {
     public function index()
