@@ -1,4 +1,4 @@
-comando da inserire in console per generare access token di amadeus ed usare le api: php artisan access-token:generate
+#N.B :Comando da inserire in console per generare access token di amadeus ed usare le api: php artisan access-token:generate
 
 
 Ho sviluppato un'applicazione di un'agenzia di viaggi utilizzando Laravel per il backend e Inertia React per il frontend. 😊
@@ -31,3 +31,5 @@ In the future, I plan to implement additional features such as email verificatio
 If you'd like to take a look at the code, you can find it in my repository on GitHub. 💻
 
 Thank you for your interest! 😊
+
+Comando da inserire in console per generare access token di amadeus ed usare le api: php artisan access-token:generate
