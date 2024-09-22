@@ -1,5 +1,5 @@
-#N.B :Comando da inserire in console per generare access token di amadeus ed usare le api: php artisan access-token:generate
-per far partire il tutto occorre usare xampp o laragon...mettere la cartella su htdocs(xamp) o www (laragon)...poi sulla cartella di progetto aroundtheworld da terminale scrivere npm run dev e poi su un altro terminale php artisan serve.
+#N.B 
+Per far partire il tutto occorre usare xampp o laragon...mettere la cartella su htdocs(xamp) o www (laragon)...poi sulla cartella di progetto aroundtheworld da terminale scrivere npm run dev e poi su un altro terminale php artisan serve.
 
 Alla fine per far funzionare la prenotazione dei voli  php artisan access-token:generate
 
