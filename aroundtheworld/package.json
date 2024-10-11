@@ -4,8 +4,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "production": "npm run dev && npm run build"
-    },
+        "production": "npm run build && npm run dev",
+        "serve": "vite preview"},
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
         "@inertiajs/react": "^1.0.0",
