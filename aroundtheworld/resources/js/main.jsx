@@ -11,7 +11,10 @@ root.render(
     <React.StrictMode>
         <InertiaApp
             initialPage={JSON.parse(container.dataset.page)}
-            resolveComponent={(name) => import(`./Pages/${name}`).then((module) => module.default)}
+            resolveComponent={(name) => 
+                import(`./Pages/${name}.jsx`) // Assicurati di aggiungere l'estensione .jsx
+                    .then((module) => module.default)
+            }
         />
     </React.StrictMode>
 );
