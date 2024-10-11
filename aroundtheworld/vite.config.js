@@ -8,7 +8,12 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '@': '/resources/js',
+            '@': '/resources/js', // Assicurati che questo sia corretto
+        },
+    },
+    build: {
+        rollupOptions: {
+            input: 'aroundtheworld/index.html', // Cambia con il percorso corretto
         },
     },
 });
