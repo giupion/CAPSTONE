@@ -1,23 +1,33 @@
 {
     "version": 2,
     "builds": [
-      {
-        "src": "server.php",
-        "use": "@vercel/php"
-      },
-      {
-        "src": "resources/js/app.js",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "public"
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "public"
+            }
         }
-      }
     ],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/server.php"
-      }
-    ]
-  }
-  
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.php"
+        }
+    ],
+    "env": {
+        "APP_ENV": "production",
+        "APP_KEY": "@app_key",
+        "APP_URL": "https://your-deployment-url.vercel.app",
+        "DB_CONNECTION": "mysql",
+        "DB_HOST": "sql7.freemysqlhosting.net",
+        "DB_PORT": "3306",
+        "DB_DATABASE": "sql7737161",
+        "DB_USERNAME": "sql7737161",
+        "DB_PASSWORD": "pZV6lj9u9c"
+    }
+}
