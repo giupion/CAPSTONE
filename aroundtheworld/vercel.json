@@ -21,7 +21,7 @@
     ],
     "env": {
         "APP_ENV": "production",
-        "APP_KEY": "@app_key",
+        
         "APP_URL": "https://your-deployment-url.vercel.app",
         "DB_CONNECTION": "mysql",
         "DB_HOST": "sql7.freemysqlhosting.net",
